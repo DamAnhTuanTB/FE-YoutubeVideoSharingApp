@@ -1,4 +1,4 @@
-import { Form, message } from "antd";
+import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import IconImageIntro from "../../assets/images/intro-register.png";
@@ -11,6 +11,7 @@ import {
   Content,
   ContentWrapper,
   FormCustom,
+  FormItem,
   ImageIntro,
   ImageWrapper,
   InputEmail,
@@ -30,7 +31,7 @@ import {
 
 export default function Register() {
   const navigate = useNavigate();
-  const [form] = Form.useForm();
+  const [form] = FormCustom.useForm();
 
   const handleFinish = (values: {
     email: string;
@@ -69,7 +70,7 @@ export default function Register() {
           </PleaseItem>
           <FormCustom form={form} onFinish={handleFinish}>
             <TitleInput>Email</TitleInput>
-            <Form.Item
+            <FormItem
               name="email"
               rules={[
                 {
@@ -83,9 +84,9 @@ export default function Register() {
               ]}
             >
               <InputEmail placeholder="client@gmail.com" />
-            </Form.Item>
+            </FormItem>
             <TitleInput>Password</TitleInput>
-            <Form.Item
+            <FormItem
               name="password"
               rules={[
                 {
@@ -99,9 +100,9 @@ export default function Register() {
               ]}
             >
               <InputPassword />
-            </Form.Item>
+            </FormItem>
             <TitleInput>Confirm password</TitleInput>
-            <Form.Item
+            <FormItem
               name="confirmPassword"
               rules={[
                 {
@@ -126,7 +127,7 @@ export default function Register() {
               ]}
             >
               <InputPassword />
-            </Form.Item>
+            </FormItem>
           </FormCustom>
           <NoticeRegister>
             By clicking on Register, you agree to{" "}

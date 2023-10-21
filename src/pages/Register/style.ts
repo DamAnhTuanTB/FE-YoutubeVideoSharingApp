@@ -85,6 +85,8 @@ export const FormCustom = styled(Form)`
   }
 `;
 
+export const FormItem = styled(Form.Item)``;
+
 export const InputEmail = styled(Input)`
   height: 50px;
   font-size: 16px;

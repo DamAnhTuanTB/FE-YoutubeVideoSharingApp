@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
+import AppContext from "../../contexts";
 import { ROUTES } from "../../routes/routes";
 import { eraseCookie } from "../../utils/cookies";
 import {
@@ -11,30 +13,25 @@ import {
   LogoImg,
   Logout,
   Register,
+  Share,
+  TextEmail,
   TextLogo,
   TextWelcome,
   WelcomeItem,
   Wrapper,
-  TextEmailMobile,
-  TextEmailDesktop
 } from "./style";
 
-export default function Header({
-  user,
-  setUser,
-  isLogin,
-  setIsLogin,
-}: {
-  user: any;
-  isLogin: boolean;
-  setUser: (user: any) => void;
-  setIsLogin: (login: boolean) => void;
-}) {
+export default function Header() {
+  const appContext = useContext(AppContext);
+
   const navigate = useNavigate();
   const handleLogout = () => {
-    setUser(undefined);
+    appContext?.setUser(undefined);
     eraseCookie("token");
-    setIsLogin(false);
+    appContext?.setLogin(false);
+  };
+  const handleOpenShare = () => {
+    appContext?.setOpenShare(true);
   };
   return (
     <Wrapper>
@@ -43,25 +40,21 @@ export default function Header({
           <LogoImg src={Logo} alt="" />
           <TextLogo>Youtube Video Sharing App</TextLogo>
         </ItemLogo>
-        {user && isLogin && (
+        {appContext?.user && appContext?.login && (
           <WelcomeItem>
             <Email>
               <TextWelcome>Welcome</TextWelcome>{" "}
-              <TextEmailMobile>
-                {user?.email?.length > 16
-                  ? user?.email?.substring(0, 16).concat("...")
-                  : user?.email}
-              </TextEmailMobile>
-              <TextEmailDesktop>{user?.email}</TextEmailDesktop>
+              <TextEmail>{appContext?.user?.email}</TextEmail>
             </Email>
-            <Logout onClick={handleLogout}>LOGOUT</Logout>
+            <Share onClick={handleOpenShare}>Share A Video</Share>
+            <Logout onClick={handleLogout}>Log Out</Logout>
           </WelcomeItem>
         )}
-        {!isLogin && (
+        {!appContext?.login && (
           <Intro>
-            <Login onClick={() => navigate(ROUTES.LOGIN)}>LOGIN</Login>
+            <Login onClick={() => navigate(ROUTES.LOGIN)}>Log In</Login>
             <Register onClick={() => navigate(ROUTES.REGISTER)}>
-              REGISTER
+              Register
             </Register>
           </Intro>
         )}

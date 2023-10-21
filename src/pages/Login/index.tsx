@@ -1,8 +1,10 @@
-import { Form, message } from "antd";
+import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import IconImageIntro from "../../assets/images/intro-login.png";
 import IconLogo from "../../assets/images/logo.png";
+import AppContext from "../../contexts";
 import { ROUTES } from "../../routes/routes";
 import { authService } from "../../services/authService";
 import { DataErrorAxios } from "../../types";
@@ -16,6 +18,7 @@ import {
   CreateNewText,
   ExampleAccount,
   FormCustom,
+  FormItem,
   ImageIntro,
   ImageWrapper,
   InputEmail,
@@ -32,8 +35,9 @@ import {
 } from "./style";
 
 export default function Login() {
+  const appContext = useContext(AppContext);
   const navigate = useNavigate();
-  const [form] = Form.useForm();
+  const [form] = FormCustom.useForm();
 
   const handleFinish = (values: { email: string; password: string }) => {
     const payload = {
@@ -44,6 +48,7 @@ export default function Login() {
       .login(payload)
       .then((response: AxiosResponse) => {
         setCookie("token", response.data?.token);
+        appContext?.setLogin(true);
         navigate(ROUTES.LIST_SHARED_VIDEOS);
       })
       .catch((error: AxiosError<DataErrorAxios>) => {
@@ -78,7 +83,7 @@ export default function Login() {
           </ExampleAccount>
           <FormCustom form={form} onFinish={handleFinish}>
             <TitleInput>Email</TitleInput>
-            <Form.Item
+            <FormItem
               name="email"
               rules={[
                 {
@@ -92,9 +97,9 @@ export default function Login() {
               ]}
             >
               <InputEmail placeholder="client@gmail.com" />
-            </Form.Item>
+            </FormItem>
             <TitleInput>Password</TitleInput>
-            <Form.Item
+            <FormItem
               name="password"
               rules={[
                 {
@@ -108,7 +113,7 @@ export default function Login() {
               ]}
             >
               <InputPassword />
-            </Form.Item>
+            </FormItem>
           </FormCustom>
           <ButtonCustom onClick={() => form.submit()}>LOGIN</ButtonCustom>
           <NoticeItem>

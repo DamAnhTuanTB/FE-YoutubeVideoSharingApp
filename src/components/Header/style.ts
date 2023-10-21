@@ -2,12 +2,14 @@ import { Button } from "antd";
 import { styled } from "styled-components";
 import { breakpoints } from "../../configs/breakpoints";
 export const Wrapper = styled.div`
-  padding: 6px 20px;
+  height: 70px;
+  padding: 0px 20px;
   background-color: #f5f5f9;
 `;
 
 export const Content = styled.div`
-  max-width: 1024px;
+  height: 100%;
+  max-width: 1200px;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -59,17 +61,9 @@ export const Email = styled.div`
   gap: 5px;
 `;
 
-export const TextEmailMobile = styled.span`
+export const TextEmail = styled.span`
   font-weight: 700;
-  font-size: 14px;
-  @media screen and (min-width: ${breakpoints.md}) {
-    display: none;
-  }
-`;
-
-export const TextEmailDesktop = styled.span`
-  font-weight: 700;
-  @media screen and (max-width: ${breakpoints.md}) {
+  @media screen and (max-width: ${breakpoints.sm}) {
     display: none;
   }
 `;
@@ -128,4 +122,21 @@ export const Register = styled(Button)`
     font-size: 12px;
     padding: 0px 12px;
   }
+`;
+
+export const Share = styled(Button)`
+  background-color: rgba(105, 108, 255, 0.8);
+  color: white !important;
+  padding: 0 15px;
+  font-weight: 700;
+  height: 35px;
+  border: none;
+  &:hover {
+    background-color: rgba(105, 108, 255, 1);
+  }
+  @media screen and (max-width: ${breakpoints.md}) {
+    height: 30px;
+    font-size: 12px;
+    padding: 0px 12px;
+  }<S
 `;
