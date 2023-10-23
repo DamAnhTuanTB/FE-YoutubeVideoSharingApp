@@ -75,6 +75,11 @@ export const DescriptionVideo = styled.div`
   }
 `;
 
+export const NoDescription = styled.div`
+  font-style: italic;
+  font-weight: 400;
+`;
+
 export const DescriptionTitle = styled.div`
   margin-top: 15px;
   color: rgba(50, 71, 92, 0.95);

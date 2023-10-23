@@ -10,6 +10,12 @@ export const Title = styled.div`
   margin-bottom: 10px;
 `;
 
+export const InfoIcon = styled.img`
+  width: 14px;
+  position: relative;
+  top: -3px;
+`;
+
 export const InputItem = styled(Input)`
   height: 50px;
   font-size: 16px;

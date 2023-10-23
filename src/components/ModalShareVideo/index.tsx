@@ -1,14 +1,33 @@
-import { FormCustom, FormItem, TitleInput } from "../../pages/Login/style";
-import { ButtonCustom, InputItem, TextAreaItem, Title, Wrapper } from "./style";
+import { Tooltip } from "antd";
+import React from "react";
+import IconInfo from "../../assets/images/info.png";
+import {
+  FormCustom,
+  FormItem,
+  SpanRequired,
+  TitleInput,
+} from "../../pages/Login/style";
+import {
+  ButtonCustom,
+  InfoIcon,
+  InputItem,
+  TextAreaItem,
+  Title,
+  Wrapper,
+} from "./style";
 
 export default function ModalShareVideo({
   open,
   handleCancel,
   handleSubmit,
+  loading,
+  setLoading,
 }: {
   open: boolean;
   handleCancel: any;
   handleSubmit: any;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [form] = FormCustom.useForm();
   const onFinish = (values: {
@@ -16,6 +35,7 @@ export default function ModalShareVideo({
     url: string;
     description: string;
   }) => {
+    setLoading(true);
     handleSubmit(values);
   };
   return (
@@ -28,19 +48,12 @@ export default function ModalShareVideo({
     >
       <Title>Share A Youtube Video</Title>
       <FormCustom form={form} onFinish={onFinish}>
-        <TitleInput>Title</TitleInput>
-        <FormItem
-          name="title"
-          rules={[
-            {
-              required: true,
-              message: "Title is a required field",
-            },
-          ]}
-        >
-          <InputItem maxLength={100} />
-        </FormItem>
-        <TitleInput>Url</TitleInput>
+        <TitleInput>
+          <SpanRequired>*</SpanRequired> Url{" "}
+          <Tooltip title="URLs with a format similar to the following sample urls will be considered valid: https://www.youtube.com/watch?v=j5i7vhAR31k, https://www.youtube.com/watch?v=j5i7vhAR31k&t=1600s, https://youtu.be/j5i7vhAR31k?si=PV68Kg43BqtcbCQW, https://www.youtube.com/embed/j5i7vhAR31k?si=jKO39_Q-E7">
+            <InfoIcon src={IconInfo} alt="" />
+          </Tooltip>
+        </TitleInput>
         <FormItem
           name="url"
           rules={[
@@ -52,23 +65,31 @@ export default function ModalShareVideo({
         >
           <InputItem />
         </FormItem>
-        <TitleInput>Description</TitleInput>
+        <TitleInput>
+          <SpanRequired>*</SpanRequired> Title
+        </TitleInput>
         <FormItem
-          name="description"
+          name="title"
           rules={[
             {
               required: true,
-              message: "Description is a required field",
+              message: "Title is a required field",
             },
           ]}
         >
+          <InputItem maxLength={100} />
+        </FormItem>
+        <TitleInput>Description</TitleInput>
+        <FormItem name="description">
           <TextAreaItem
             maxLength={200}
             style={{ height: 120, resize: "none" }}
           />
         </FormItem>
       </FormCustom>
-      <ButtonCustom onClick={() => form.submit()}>SHARE</ButtonCustom>
+      <ButtonCustom loading={loading} onClick={() => form.submit()}>
+        SHARE
+      </ButtonCustom>
     </Wrapper>
   );
 }

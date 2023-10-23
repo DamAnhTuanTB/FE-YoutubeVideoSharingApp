@@ -116,9 +116,13 @@ export const InputPassword = styled(Input.Password)`
 `;
 
 export const TitleInput = styled.div`
-  color: rgba(50, 71, 92, 0.6);
+  color: rgba(50, 71, 92, 0.8);
   font-weight: 500;
   font-size: 15px;
+`;
+
+export const SpanRequired = styled.span`
+  color: #ff3131
 `;
 
 export const ButtonCustom = styled(Button)`

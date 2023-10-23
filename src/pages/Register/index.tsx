@@ -28,6 +28,7 @@ import {
   WelcomeItem,
   Wrapper,
 } from "./style";
+import { SpanRequired } from "../Login/style";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ export default function Register() {
             An excellent platform for sharing online videos!
           </PleaseItem>
           <FormCustom form={form} onFinish={handleFinish}>
-            <TitleInput>Email</TitleInput>
+            <TitleInput><SpanRequired>*</SpanRequired> Email</TitleInput>
             <FormItem
               name="email"
               rules={[
@@ -85,7 +86,7 @@ export default function Register() {
             >
               <InputEmail placeholder="client@gmail.com" />
             </FormItem>
-            <TitleInput>Password</TitleInput>
+            <TitleInput><SpanRequired>*</SpanRequired> Password</TitleInput>
             <FormItem
               name="password"
               rules={[
@@ -101,27 +102,23 @@ export default function Register() {
             >
               <InputPassword />
             </FormItem>
-            <TitleInput>Confirm password</TitleInput>
+            <TitleInput><SpanRequired>*</SpanRequired> Confirm password</TitleInput>
             <FormItem
               name="confirmPassword"
+              dependencies={["password"]}
               rules={[
                 {
                   required: true,
                   message: "Password confirmation is a required field",
                 },
                 ({ getFieldValue }) => ({
-                  validator(_, value: string) {
-                    if (!value) {
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
-
-                    if (getFieldValue("password") !== value) {
-                      return Promise.reject(
-                        new Error("Password confirmation does not match")
-                      );
-                    } else {
-                      return Promise.resolve();
-                    }
+                    return Promise.reject(
+                      new Error("Password confirmation does not match")
+                    );
                   },
                 }),
               ]}

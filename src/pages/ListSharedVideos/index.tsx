@@ -1,9 +1,10 @@
 import { message } from "antd";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 import ModalShareVideo from "../../components/ModalShareVideo";
 import AppContext from "../../contexts";
 import { videoService } from "../../services/videoService";
+import { DataErrorAxios } from "../../types";
 import {
   Content,
   DescriptionTitle,
@@ -11,6 +12,7 @@ import {
   InfoVideo,
   ItemVideo,
   ListVideos,
+  NoDescription,
   PaginationCustom,
   TitleVideo,
   User,
@@ -24,6 +26,7 @@ export default function ListSharedVideos() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [videos, setVideos] = useState([]);
+  const [loadingShare, setLoadingShare] = useState(false);
 
   const getListVideo = () => {
     videoService.getListVideo({ page }).then((res: AxiosResponse) => {
@@ -38,14 +41,36 @@ export default function ListSharedVideos() {
 
   const handleCancelShare = () => {
     appContext?.setOpenShare(false);
+    setLoadingShare(false);
   };
 
-  const handleSubmitShare = (body: any) => {
-    videoService.shareVideo(body).then((res: AxiosResponse) => {
-      message.success("Successfully share video");
-      getListVideo();
-      handleCancelShare();
-    });
+  const handleSubmitShare = (body: {
+    url: string;
+    title: string;
+    description?: string;
+  }) => {
+    const url = body.url;
+    videoService
+      .getInfoVideo({ url })
+      .then((res: AxiosResponse) => {
+        const urlEmbed = res?.data?.urlEmbed;
+        videoService
+          .shareVideo({ ...body, url: urlEmbed })
+          .then((res: AxiosResponse) => {
+            message.success("Successfully share video");
+            getListVideo();
+            handleCancelShare();
+          });
+      })
+      .catch((error: AxiosError<DataErrorAxios>) => {
+        if (error?.response?.status === 400) {
+          message.error(error?.response?.data?.message);
+          setLoadingShare(false);
+        } else {
+          message.error("An error occurred. Please try again later.");
+          handleCancelShare();
+        }
+      });
   };
 
   useEffect(() => {
@@ -71,7 +96,13 @@ export default function ListSharedVideos() {
                   Shared by: <User>{video?.email}</User>
                 </UserVideo>
                 <DescriptionTitle>Description:</DescriptionTitle>
-                <DescriptionVideo>{video?.description}</DescriptionVideo>
+                <DescriptionVideo>
+                  {video?.description || (
+                    <NoDescription>
+                      There is no description for this video
+                    </NoDescription>
+                  )}
+                </DescriptionVideo>
               </InfoVideo>
             </ItemVideo>
           ))}
@@ -87,6 +118,8 @@ export default function ListSharedVideos() {
       </Content>
       {appContext?.openShare && (
         <ModalShareVideo
+          loading={loadingShare}
+          setLoading={setLoadingShare}
           open={appContext?.openShare}
           handleCancel={handleCancelShare}
           handleSubmit={handleSubmitShare}

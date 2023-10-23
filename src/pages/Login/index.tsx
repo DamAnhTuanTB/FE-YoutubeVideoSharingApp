@@ -27,6 +27,7 @@ import {
   LogoItem,
   NoticeItem,
   PleaseItem,
+  SpanRequired,
   TextLogo,
   TitleAccount,
   TitleInput,
@@ -82,7 +83,9 @@ export default function Login() {
             </Account>
           </ExampleAccount>
           <FormCustom form={form} onFinish={handleFinish}>
-            <TitleInput>Email</TitleInput>
+            <TitleInput>
+              <SpanRequired>*</SpanRequired> Email
+            </TitleInput>
             <FormItem
               name="email"
               rules={[
@@ -98,7 +101,7 @@ export default function Login() {
             >
               <InputEmail placeholder="client@gmail.com" />
             </FormItem>
-            <TitleInput>Password</TitleInput>
+            <TitleInput><SpanRequired>*</SpanRequired> Password</TitleInput>
             <FormItem
               name="password"
               rules={[

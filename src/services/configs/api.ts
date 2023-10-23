@@ -3,4 +3,5 @@ export const APIs = {
   REGISTER: "/auth/register",
   GET_ME: "/user",
   VIDEO: "/video",
+  INFO_VIDEO: "/video/info",
 };

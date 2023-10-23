@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
   (error: AxiosError): Promise<AxiosError> => {
     if (error?.response?.status === 401) {
       eraseCookie("token");
-      window.location.href = `${window.location.origin}/${ROUTES.LOGIN}`;
+      // window.location.href = `${window.location.origin}${ROUTES.LOGIN}`;
     }
 
     return Promise.reject(error);
