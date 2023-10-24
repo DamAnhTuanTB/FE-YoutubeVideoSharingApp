@@ -1,14 +1,15 @@
 import { APIs } from "./configs/api";
-import baseRequest from "./configs/httpService";
+// import { baseRequest } from "./configs/httpService";
+import { fetchData } from "./configs/fetch";
 
 export const authService = {
   register(payload: { email: string; password: string }) {
-    return baseRequest.post(APIs.REGISTER, payload);
+    return fetchData(APIs.REGISTER, "POST", payload);
   },
   login(payload: { email: string; password: string }) {
-    return baseRequest.post(APIs.LOGIN, payload);
+    return fetchData(APIs.LOGIN, "POST", payload);
   },
   getProfile() {
-    return baseRequest.get(APIs.GET_ME);
+    return fetchData(APIs.GET_ME, "GET");
   },
 };

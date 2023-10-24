@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import ListSharedVideos from "../pages/ListSharedVideos";
 import Login from "../pages/Login";
@@ -16,11 +17,15 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  { path: ROUTES.LOGIN, element: <Login /> },
   {
-    path: ROUTES.REGISTER,
-    element: <Register />,
+    element: <AuthLayout />,
+    children: [
+      { path: ROUTES.LOGIN, element: <Login /> },
+      {
+        path: ROUTES.REGISTER,
+        element: <Register />,
+      },
+    ],
   },
-
   { path: ROUTES.ERROR, element: <NotFound /> },
 ]);

@@ -1,11 +1,10 @@
 import { message } from "antd";
-import { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import IconImageIntro from "../../assets/images/intro-register.png";
 import IconLogo from "../../assets/images/logo.png";
 import { ROUTES } from "../../routes/routes";
 import { authService } from "../../services/authService";
-import { DataErrorAxios } from "../../types";
+import { SpanRequired } from "../Login/style";
 import {
   ButtonCustom,
   Content,
@@ -28,7 +27,6 @@ import {
   WelcomeItem,
   Wrapper,
 } from "./style";
-import { SpanRequired } from "../Login/style";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -45,12 +43,16 @@ export default function Register() {
     };
     authService
       .register(payload)
-      .then((response: AxiosResponse) => {
-        message.success(response.data?.message);
+      .then((data) => {
+        message.success(data?.message);
         navigate(ROUTES.LOGIN);
       })
-      .catch((error: AxiosError<DataErrorAxios>) => {
-        message.error(error?.response?.data?.message);
+      .catch((error) => {
+        if (error?.status === 400) {
+          message.error("Email actually exists. Please check again.");
+        } else {
+          message.error("An error occurred. Please try again later.");
+        }
       });
   };
 
@@ -70,7 +72,9 @@ export default function Register() {
             An excellent platform for sharing online videos!
           </PleaseItem>
           <FormCustom form={form} onFinish={handleFinish}>
-            <TitleInput><SpanRequired>*</SpanRequired> Email</TitleInput>
+            <TitleInput>
+              <SpanRequired>*</SpanRequired> Email
+            </TitleInput>
             <FormItem
               name="email"
               rules={[
@@ -84,9 +88,11 @@ export default function Register() {
                 },
               ]}
             >
-              <InputEmail placeholder="client@gmail.com" />
+              <InputEmail placeholder="Your email" />
             </FormItem>
-            <TitleInput><SpanRequired>*</SpanRequired> Password</TitleInput>
+            <TitleInput>
+              <SpanRequired>*</SpanRequired> Password
+            </TitleInput>
             <FormItem
               name="password"
               rules={[
@@ -100,9 +106,11 @@ export default function Register() {
                 },
               ]}
             >
-              <InputPassword />
+              <InputPassword placeholder="Your password"/>
             </FormItem>
-            <TitleInput><SpanRequired>*</SpanRequired> Confirm password</TitleInput>
+            <TitleInput>
+              <SpanRequired>*</SpanRequired> Confirm password
+            </TitleInput>
             <FormItem
               name="confirmPassword"
               dependencies={["password"]}
@@ -123,7 +131,7 @@ export default function Register() {
                 }),
               ]}
             >
-              <InputPassword />
+              <InputPassword placeholder="Your password confirmation"/>
             </FormItem>
           </FormCustom>
           <NoticeRegister>

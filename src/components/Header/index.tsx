@@ -34,7 +34,7 @@ export default function Header() {
     appContext?.setOpenShare(true);
   };
   return (
-    <Wrapper>
+    <Wrapper data-testid="header-element">
       <Content>
         <ItemLogo>
           <LogoImg src={Logo} alt="" />

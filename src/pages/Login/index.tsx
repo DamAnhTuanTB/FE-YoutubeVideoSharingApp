@@ -1,5 +1,4 @@
 import { message } from "antd";
-import { AxiosError, AxiosResponse } from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import IconImageIntro from "../../assets/images/intro-login.png";
@@ -7,7 +6,6 @@ import IconLogo from "../../assets/images/logo.png";
 import AppContext from "../../contexts";
 import { ROUTES } from "../../routes/routes";
 import { authService } from "../../services/authService";
-import { DataErrorAxios } from "../../types";
 import { setCookie } from "../../utils/cookies";
 import {
   Account,
@@ -45,15 +43,20 @@ export default function Login() {
       email: values.email,
       password: values.password,
     };
+
     authService
       .login(payload)
-      .then((response: AxiosResponse) => {
-        setCookie("token", response.data?.token);
+      .then((data) => {
+        setCookie("token", data?.token);
         appContext?.setLogin(true);
         navigate(ROUTES.LIST_SHARED_VIDEOS);
       })
-      .catch((error: AxiosError<DataErrorAxios>) => {
-        message.error(error?.response?.data?.message);
+      .catch((error) => {
+        if (error?.status === 400) {
+          message.error("Email or password is incorrect. Please check again.");
+        } else {
+          message.error("An error occurred. Please try again later.");
+        }
       });
   };
 
@@ -99,9 +102,11 @@ export default function Login() {
                 },
               ]}
             >
-              <InputEmail placeholder="client@gmail.com" />
+              <InputEmail placeholder="Your email" />
             </FormItem>
-            <TitleInput><SpanRequired>*</SpanRequired> Password</TitleInput>
+            <TitleInput>
+              <SpanRequired>*</SpanRequired> Password
+            </TitleInput>
             <FormItem
               name="password"
               rules={[
@@ -115,7 +120,7 @@ export default function Login() {
                 },
               ]}
             >
-              <InputPassword />
+              <InputPassword placeholder="Your password" />
             </FormItem>
           </FormCustom>
           <ButtonCustom onClick={() => form.submit()}>LOGIN</ButtonCustom>

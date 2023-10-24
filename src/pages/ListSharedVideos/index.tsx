@@ -1,10 +1,9 @@
 import { message } from "antd";
-import { AxiosError, AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 import ModalShareVideo from "../../components/ModalShareVideo";
 import AppContext from "../../contexts";
 import { videoService } from "../../services/videoService";
-import { DataErrorAxios } from "../../types";
+import { BodyShareVideo, VideoItem } from "../../types";
 import {
   Content,
   DescriptionTitle,
@@ -29,9 +28,9 @@ export default function ListSharedVideos() {
   const [loadingShare, setLoadingShare] = useState(false);
 
   const getListVideo = () => {
-    videoService.getListVideo({ page }).then((res: AxiosResponse) => {
-      setTotal(res.data.total);
-      setVideos(res.data?.data);
+    videoService.getListVideo({ page }).then((data) => {
+      setTotal(data.total);
+      setVideos(data?.data);
     });
   };
 
@@ -44,27 +43,23 @@ export default function ListSharedVideos() {
     setLoadingShare(false);
   };
 
-  const handleSubmitShare = (body: {
-    url: string;
-    title: string;
-    description?: string;
-  }) => {
+  const handleSubmitShare = (body: BodyShareVideo) => {
     const url = body.url;
     videoService
       .getInfoVideo({ url })
-      .then((res: AxiosResponse) => {
-        const urlEmbed = res?.data?.urlEmbed;
-        videoService
-          .shareVideo({ ...body, url: urlEmbed })
-          .then((res: AxiosResponse) => {
-            message.success("Successfully share video");
-            getListVideo();
-            handleCancelShare();
-          });
+      .then((data) => {
+        const urlEmbed = data?.urlEmbed;
+        videoService.shareVideo({ ...body, url: urlEmbed }).then(() => {
+          message.success("Successfully share video");
+          getListVideo();
+          handleCancelShare();
+        });
       })
-      .catch((error: AxiosError<DataErrorAxios>) => {
-        if (error?.response?.status === 400) {
-          message.error(error?.response?.data?.message);
+      .catch((error) => {
+        if (error?.status === 400) {
+          message.error(
+            "The URL of the video you provided is not correct. Please check again."
+          );
           setLoadingShare(false);
         } else {
           message.error("An error occurred. Please try again later.");
@@ -81,8 +76,8 @@ export default function ListSharedVideos() {
     <Wrapper>
       <Content>
         <ListVideos>
-          {videos?.map((video: any) => (
-            <ItemVideo key={video?.id}>
+          {videos?.map((video: VideoItem) => (
+            <ItemVideo key={video?.id} data-testid="video-item">
               <Video
                 src={video?.url}
                 title="YouTube video player"
@@ -109,6 +104,7 @@ export default function ListSharedVideos() {
         </ListVideos>
         {total > 0 && (
           <PaginationCustom
+            data-testid='pagination-element'
             onChange={handleChangePage}
             pageSize={10}
             total={total}

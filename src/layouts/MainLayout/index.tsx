@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header";
@@ -11,9 +10,9 @@ export default function MainLayout() {
   const appContext = useContext(AppContext);
   useEffect(() => {
     if (getCookie("token")) {
-      authService.getProfile().then((res: AxiosResponse) => {
-        if (res.data?.data) {
-          appContext?.setUser(res.data?.data);
+      authService.getProfile().then((data) => {
+        if (data?.data) {
+          appContext?.setUser(data?.data);
         }
       });
     }
@@ -21,10 +20,9 @@ export default function MainLayout() {
   return (
     <Wrapper>
       <Header />
-      <Content>
+      <Content data-testid="content-element">
         <Outlet />
       </Content>
-      {/* <Footer /> */}
     </Wrapper>
   );
 }

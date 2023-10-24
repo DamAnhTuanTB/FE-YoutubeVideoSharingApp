@@ -7,6 +7,7 @@ import {
   SpanRequired,
   TitleInput,
 } from "../../pages/Login/style";
+import { BodyShareVideo } from "../../types";
 import {
   ButtonCustom,
   InfoIcon,
@@ -24,22 +25,19 @@ export default function ModalShareVideo({
   setLoading,
 }: {
   open: boolean;
-  handleCancel: any;
-  handleSubmit: any;
+  handleCancel: () => void;
+  handleSubmit: ({ title, url, description }: BodyShareVideo) => void;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [form] = FormCustom.useForm();
-  const onFinish = (values: {
-    title: string;
-    url: string;
-    description: string;
-  }) => {
+  const onFinish = (values: BodyShareVideo) => {
     setLoading(true);
     handleSubmit(values);
   };
   return (
     <Wrapper
+      data-testid="modal-share-video"
       onCancel={handleCancel}
       open={open}
       centered
@@ -63,7 +61,7 @@ export default function ModalShareVideo({
             },
           ]}
         >
-          <InputItem />
+          <InputItem placeholder="Example url: https://www.youtube.com/watch?v=j5i7vhAR31k" />
         </FormItem>
         <TitleInput>
           <SpanRequired>*</SpanRequired> Title
@@ -77,11 +75,12 @@ export default function ModalShareVideo({
             },
           ]}
         >
-          <InputItem maxLength={100} />
+          <InputItem placeholder="Your title" maxLength={100} />
         </FormItem>
         <TitleInput>Description</TitleInput>
         <FormItem name="description">
           <TextAreaItem
+            placeholder="Your description"
             maxLength={200}
             style={{ height: 120, resize: "none" }}
           />

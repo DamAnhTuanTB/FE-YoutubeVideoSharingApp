@@ -1,18 +1,14 @@
 import { APIs } from "./configs/api";
-import baseRequest from "./configs/httpService";
+import { fetchData } from "./configs/fetch";
 
 export const videoService = {
   shareVideo(payload: { url: string; title: string; description?: string }) {
-    return baseRequest.post(APIs.VIDEO, payload);
+    return fetchData(APIs.VIDEO, "POST", payload);
   },
   getListVideo(params: { page?: number; limit?: number }) {
-    return baseRequest.get(APIs.VIDEO, {
-      params,
-    });
+    return fetchData(`${APIs.VIDEO}?page=${params.page}`, "GET");
   },
   getInfoVideo(params: { url: string }) {
-    return baseRequest.get(APIs.INFO_VIDEO, {
-      params,
-    });
+    return fetchData(`${APIs.INFO_VIDEO}?url=${params.url}`, "GET");
   },
 };
