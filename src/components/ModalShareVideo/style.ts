@@ -44,3 +44,22 @@ export const ButtonCustom = styled(Button)`
     background-color: rgba(105, 108, 255);
   }
 `;
+
+export const ButtonAutoFillTitle = styled(Button)`
+  display: inline-block;
+  background-color: rgba(192, 51, 51, 0.7);
+  color: white !important;
+  height: 25px;
+  padding: 0px 7px;
+  margin: auto;
+  margin-top: 18px;
+  /* width: 100%; */
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 6px;
+  border: none;
+  &:hover {
+    background-color: rgba(192, 51, 51, 0.9);
+  }
+  margin-bottom: 5px;
+`;

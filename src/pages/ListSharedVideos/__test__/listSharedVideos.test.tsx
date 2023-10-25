@@ -137,6 +137,26 @@ describe("List Shared Videos Page", () => {
   //   });
   // });
 
+  it("show error message url is not correct when click button auto fill title with empty url or invalid url", async () => {
+    const appContext = {
+      openShare: true,
+      setOpenShare: jest.fn(),
+    };
+    setUp(appContext);
+    const autoFillTitleButton = screen.getByText("Auto Fill Title");
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    act(() => {
+      fireEvent.click(autoFillTitleButton);
+    });
+
+    await waitFor(() => {
+      const messageError = screen.queryAllByText(
+        "The URL of the video you provided is not correct. Please check again."
+      );
+      expect(messageError.length).toBeGreaterThan(0);
+    });
+  });
+
   it("renders the modal share video with elements when click button share a video", () => {
     const appContext = {
       openShare: true,

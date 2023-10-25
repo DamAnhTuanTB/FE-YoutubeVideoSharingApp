@@ -1,46 +1,55 @@
-# Getting Started with Create React App
+# **Youtube Video Sharing App**
+### **1. Introduce**
+This project is a web application built using ReactJS in front-end and NestJS in back-end.
+##### Purpose
+The main purpose of the project is to help users store video links taken from YouTube into their own system. Thereby, helping users easily manage and review the videos they have shared.
+##### Key features
+- ***User registraion and login***: Users can register/log in to become a member of the system. Once you have become an official member, users can use the Sharing YouTube videos.
+- ***Sharing YouTube videos***: Users only need to provide us with the video link on YouTube. We will help them store that video on our system.
+- ***Viewing a list of shared videos***: Users can view a list of videos that have been successfully shared by themselves or other members in the system.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### **2. Main Technology Used**
++ **ReactJS**: ReactJS is a JavaScript library for building user interfaces, known for its component-based structure, reusability, and efficient rendering, simplifying the development of interactive web applications. 
++ **TypeScript**: TypeScript is a statically typed superset of JavaScript that offers enhanced code quality, better tooling, and improved maintainability.
++ **Ant Design**: Ant Design is a popular UI library for React that offers a wide range of pre-designed, customizable components, streamlining the development of visually appealing and responsive web applications.
++ **Styled Component**: Styled Components is a CSS-in-JS library that enables component-based styling in React applications, enhancing code maintainability and allowing dynamic styling based on props.
++ **React Testing Library**: React Testing Library is a testing utility for React that focuses on writing tests that resemble how users interact with your application, promoting a user-centric testing approach for more robust and maintainable code.
+### **3. Instructions For Installing And Running The Project Locally**
+> **Prerequisites**: Before you begin, make sure you have the following technologies installed on your personal computer: git, node.js. npm
+-  Download the project to your personal computer:
+```bash
+git clone https://github.com/DamAnhTuanTB/FE-YoutubeVideoSharingApp.git
+```
+- Open the downloaded project using ide software, type the following command to install the necessary packages:
+```bash
+npm install
+```
+- Run the project locally using the command below. After, you can access http://localhost:3000 to view the system.
+```bash
+npm start
+```
+- If you want to test the project locally, run the following command:
+```bash
+npm run test
+```
+### **4. Online Link To Use**
+In addition to using the system locally as in part 3, you can access the following link to use the system: https://fe-youtube-video-sharing-app.vercel.app
+### **5. Detailed Instructions On How To Use The Features**
+##### Register
+- To become an official member of the system, users must provide a valid email and password. Email must be unique and has not been used to register into the system before.
+##### Log in
+- Must log in with an account that has been successfully created before. Provide correct email and password to successfully log in to the system. 
+##### Log out
+- Users can log out of the system to log in to another account.
+##### Share a video
+- This feature is only used after successful login.
+- After successfully logging in, click the Share A Video button on the header to open the video sharing dialog box.
+- Fill in all the information in the dialog box that appears. Note, the url field must be a valid YouTube link. If you provide an invalid link, the video will not be shared successfully.
+- A valid youtube link might look like this: https://www.youtube.com/watch?v=j5i7vhAR31k, https://www.youtube.com/watch?v=j5i7vhAR31k&t=1600s, https://youtu.be/j5i7vhAR31k?si=PV68Kg43BqtcbCQW, https://www.youtube.com/embed/j5i7vhAR31k?si=jKO39_Q-E7
+##### Viewing a list of shared videos
+- Users can view a list of videos that have been successfully shared by themselves or other members.
+- No need to log in to still access this feature.
+### **6. Troubleshooting**
+- If you are having trouble loading the page, please make sure you have the best network connection.
+- If you run local the project with problems, please make sure your computer has the latest node.js installed. You also need to make sure you have the .env file set up with the correct values.
+- We recommend that you set the **REACT_APP_BASE_URL** value in the **.env** file to a local path in the backend with the value ***http://localhost:9090/api*** when running tests, to ensure the test cases are tested most accurately after you run the command ***npm run test***. There are some unknown causes of errors in some test cases related to connection speed when using online backend links. These errors may occasionally occur when using the backend's online link.

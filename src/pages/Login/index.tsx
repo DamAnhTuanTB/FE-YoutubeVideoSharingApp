@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IconImageIntro from "../../assets/images/intro-login.png";
 import IconLogo from "../../assets/images/logo.png";
@@ -36,22 +36,26 @@ import {
 export default function Login() {
   const appContext = useContext(AppContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form] = FormCustom.useForm();
 
   const handleFinish = (values: { email: string; password: string }) => {
+    setLoading(true);
     const payload = {
-      email: values.email,
+      email: values.email.toLowerCase(),
       password: values.password,
     };
 
     authService
       .login(payload)
       .then((data) => {
+        setLoading(false);
         setCookie("token", data?.token);
         appContext?.setLogin(true);
         navigate(ROUTES.LIST_SHARED_VIDEOS);
       })
       .catch((error) => {
+        setLoading(false);
         if (error?.status === 400) {
           message.error("Email or password is incorrect. Please check again.");
         } else {
@@ -123,7 +127,9 @@ export default function Login() {
               <InputPassword placeholder="Your password" />
             </FormItem>
           </FormCustom>
-          <ButtonCustom onClick={() => form.submit()}>LOGIN</ButtonCustom>
+          <ButtonCustom loading={loading} onClick={() => form.submit()}>
+            LOGIN
+          </ButtonCustom>
           <NoticeItem>
             New on our platform?{" "}
             <CreateNewText onClick={() => navigate(ROUTES.REGISTER)}>

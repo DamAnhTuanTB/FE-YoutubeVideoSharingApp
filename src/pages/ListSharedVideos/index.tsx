@@ -44,16 +44,22 @@ export default function ListSharedVideos() {
   };
 
   const handleSubmitShare = (body: BodyShareVideo) => {
-    const url = body.url;
+    const url = body.url.trim();
     videoService
       .getInfoVideo({ url })
       .then((data) => {
         const urlEmbed = data?.urlEmbed;
-        videoService.shareVideo({ ...body, url: urlEmbed }).then(() => {
-          message.success("Successfully share video");
-          getListVideo();
-          handleCancelShare();
-        });
+        videoService
+          .shareVideo({
+            title: body.title.trim(),
+            description: body.description?.trim(),
+            url: urlEmbed,
+          })
+          .then(() => {
+            message.success("Successfully share video");
+            getListVideo();
+            handleCancelShare();
+          });
       })
       .catch((error) => {
         if (error?.status === 400) {
@@ -104,7 +110,7 @@ export default function ListSharedVideos() {
         </ListVideos>
         {total > 0 && (
           <PaginationCustom
-            data-testid='pagination-element'
+            data-testid="pagination-element"
             onChange={handleChangePage}
             pageSize={10}
             total={total}

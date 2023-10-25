@@ -1,5 +1,5 @@
-import { Tooltip } from "antd";
-import React from "react";
+import { Tooltip, message } from "antd";
+import React, { useState } from "react";
 import IconInfo from "../../assets/images/info.png";
 import {
   FormCustom,
@@ -7,8 +7,10 @@ import {
   SpanRequired,
   TitleInput,
 } from "../../pages/Login/style";
+import { videoService } from "../../services/videoService";
 import { BodyShareVideo } from "../../types";
 import {
+  ButtonAutoFillTitle,
   ButtonCustom,
   InfoIcon,
   InputItem,
@@ -31,10 +33,40 @@ export default function ModalShareVideo({
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [form] = FormCustom.useForm();
+  const [loadingAutoFill, setLoadingAutoFill] = useState(false);
   const onFinish = (values: BodyShareVideo) => {
     setLoading(true);
     handleSubmit(values);
   };
+
+  const handleAutoFillTitle = () => {
+    if (!form.getFieldValue("url")) {
+      message.error(
+        "The URL of the video you provided is not correct. Please check again."
+      );
+    } else {
+      setLoadingAutoFill(true);
+      videoService
+        .getInfoVideo({ url: form.getFieldValue("url") })
+        .then((data) => {
+          form.setFieldValue("title", data?.title);
+          form.validateFields();
+          setLoadingAutoFill(false);
+        })
+        .catch((error) => {
+          if (error?.status === 400) {
+            message.error(
+              "The URL of the video you provided is not correct. Please check again."
+            );
+            setLoadingAutoFill(false);
+          } else {
+            message.error("An error occurred. Please try again later.");
+            setLoadingAutoFill(false);
+          }
+        });
+    }
+  };
+
   return (
     <Wrapper
       data-testid="modal-share-video"
@@ -59,12 +91,28 @@ export default function ModalShareVideo({
               required: true,
               message: "Url is a required field",
             },
+            () => ({
+              validator(_, value) {
+                if (value?.trim() === "" && value?.length > 0) {
+                  return Promise.reject(new Error("Url is a required field"));
+                } else {
+                  return Promise.resolve();
+                }
+              },
+            }),
           ]}
         >
           <InputItem placeholder="Example url: https://www.youtube.com/watch?v=j5i7vhAR31k" />
         </FormItem>
+
         <TitleInput>
-          <SpanRequired>*</SpanRequired> Title
+          <SpanRequired>*</SpanRequired> Title{" "}
+          <ButtonAutoFillTitle
+            loading={loadingAutoFill}
+            onClick={handleAutoFillTitle}
+          >
+            Auto Fill Title
+          </ButtonAutoFillTitle>
         </TitleInput>
         <FormItem
           name="title"
@@ -73,6 +121,15 @@ export default function ModalShareVideo({
               required: true,
               message: "Title is a required field",
             },
+            () => ({
+              validator(_, value) {
+                if (value?.trim() === "" && value?.length > 0) {
+                  return Promise.reject(new Error("Title is a required field"));
+                } else {
+                  return Promise.resolve();
+                }
+              },
+            }),
           ]}
         >
           <InputItem placeholder="Your title" maxLength={100} />

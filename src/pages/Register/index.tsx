@@ -1,4 +1,5 @@
 import { message } from "antd";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IconImageIntro from "../../assets/images/intro-register.png";
 import IconLogo from "../../assets/images/logo.png";
@@ -30,6 +31,7 @@ import {
 
 export default function Register() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form] = FormCustom.useForm();
 
   const handleFinish = (values: {
@@ -37,17 +39,20 @@ export default function Register() {
     password: string;
     confirmPassword: string;
   }) => {
+    setLoading(true);
     const payload = {
-      email: values.email,
+      email: values.email.toLowerCase(),
       password: values.password,
     };
     authService
       .register(payload)
       .then((data) => {
+        setLoading(false);
         message.success(data?.message);
         navigate(ROUTES.LOGIN);
       })
       .catch((error) => {
+        setLoading(false);
         if (error?.status === 400) {
           message.error("Email actually exists. Please check again.");
         } else {
@@ -106,7 +111,7 @@ export default function Register() {
                 },
               ]}
             >
-              <InputPassword placeholder="Your password"/>
+              <InputPassword placeholder="Your password" />
             </FormItem>
             <TitleInput>
               <SpanRequired>*</SpanRequired> Confirm password
@@ -131,7 +136,7 @@ export default function Register() {
                 }),
               ]}
             >
-              <InputPassword placeholder="Your password confirmation"/>
+              <InputPassword placeholder="Your password confirmation" />
             </FormItem>
           </FormCustom>
           <NoticeRegister>
@@ -140,7 +145,9 @@ export default function Register() {
               Our Terms and Conditions of Use
             </TermsAndConditions>
           </NoticeRegister>
-          <ButtonCustom onClick={() => form.submit()}>REGISTER</ButtonCustom>
+          <ButtonCustom loading={loading} onClick={() => form.submit()}>
+            REGISTER
+          </ButtonCustom>
           <NoticeItem>
             Already have an account?{" "}
             <LoginInstead onClick={() => navigate(ROUTES.LOGIN)}>
