@@ -45,6 +45,8 @@ In addition to using the system locally as in part 3, you can access the followi
 - This feature is only used after successful login.
 - After successfully logging in, click the Share A Video button on the header to open the video sharing dialog box.
 - Fill in all the information in the dialog box that appears. Note, the url field must be a valid YouTube link. If you provide an invalid link, the video will not be shared successfully.
+- You can let the system autofill video titles by pressing the Auto Fill Title button. To do that, you need to fill in the Url field with an exact YouTube video link.
+- The url field and title field are two fields that must have a value before pressing the Share button. The Description field is optional. You can manually enter a value for this field or not.
 - A valid youtube link might look like this: https://www.youtube.com/watch?v=j5i7vhAR31k, https://www.youtube.com/watch?v=j5i7vhAR31k&t=1600s, https://youtu.be/j5i7vhAR31k?si=PV68Kg43BqtcbCQW, https://www.youtube.com/embed/j5i7vhAR31k?si=jKO39_Q-E7
 ##### Viewing a list of shared videos
 - Users can view a list of videos that have been successfully shared by themselves or other members.
