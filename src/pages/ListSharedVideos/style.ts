@@ -58,6 +58,7 @@ export const InfoVideo = styled.div`
 export const TitleVideo = styled.div`
   font-weight: 700;
   font-size: 22px;
+  cursor: pointer;
   /* color: rgba(50, 71, 92, 0.95); */
 `;
 

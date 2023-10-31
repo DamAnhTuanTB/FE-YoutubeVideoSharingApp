@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
+import DetailVideo from "../pages/DetailVideo";
 import ListSharedVideos from "../pages/ListSharedVideos";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.LIST_SHARED_VIDEOS,
         element: <ListSharedVideos />,
+      },
+      {
+        path: ROUTES.DETAIL_VIDEO,
+        element: <DetailVideo />,
       },
     ],
   },

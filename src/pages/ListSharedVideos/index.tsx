@@ -1,5 +1,6 @@
 import { message } from "antd";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ModalShareVideo from "../../components/ModalShareVideo";
 import AppContext from "../../contexts";
 import { videoService } from "../../services/videoService";
@@ -26,6 +27,8 @@ export default function ListSharedVideos() {
   const [page, setPage] = useState(1);
   const [videos, setVideos] = useState([]);
   const [loadingShare, setLoadingShare] = useState(false);
+
+  const navigate = useNavigate();
 
   const getListVideo = () => {
     videoService.getListVideo({ page }).then((data) => {
@@ -92,7 +95,9 @@ export default function ListSharedVideos() {
                 allowFullScreen
               />
               <InfoVideo>
-                <TitleVideo>{video?.title}</TitleVideo>
+                <TitleVideo onClick={() => navigate(`/detail/${video?.id}`)}>
+                  {video?.title}
+                </TitleVideo>
                 <UserVideo>
                   Shared by: <User>{video?.email}</User>
                 </UserVideo>

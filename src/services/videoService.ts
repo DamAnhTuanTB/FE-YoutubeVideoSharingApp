@@ -11,4 +11,10 @@ export const videoService = {
   getInfoVideo(params: { url: string }) {
     return fetchData(`${APIs.INFO_VIDEO}?url=${params.url}`, "GET");
   },
+  getDetailVideo(id: string) {
+    return fetchData(`${APIs.DETAIL_VIDEO}/${id}`, "GET");
+  },
+  commentVideo(payload: { videoId: string; comment: string }) {
+    return fetchData(`${APIs.COMMENT_VIDEO}`, "POST", payload);
+  },
 };

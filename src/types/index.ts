@@ -22,3 +22,17 @@ export interface BodyShareVideo {
   title: string;
   description?: string;
 }
+
+export interface VideoDetail {
+  id: string;
+  email: string;
+  url: string;
+  title: string;
+  description?: string;
+  listComment: {
+    id: string;
+    email: string;
+    comment: string;
+    createdAt: Date;
+  }[];
+}

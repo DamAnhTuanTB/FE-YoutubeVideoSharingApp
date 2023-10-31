@@ -3,4 +3,5 @@ export const ROUTES = {
   REGISTER: "/register",
   LIST_SHARED_VIDEOS: "/",
   ERROR: "*",
+  DETAIL_VIDEO: "/detail/:id",
 };
