@@ -1,9 +1,11 @@
 import { message } from "antd";
 import { useContext, useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ModalShareVideo from "../../components/ModalShareVideo";
 import AppContext from "../../contexts";
 import { videoService } from "../../services/videoService";
+// import { RootState } from "../../store/store";
 import { BodyShareVideo, VideoItem } from "../../types";
 import {
   Content,
@@ -22,6 +24,7 @@ import {
 } from "./style";
 
 export default function ListSharedVideos() {
+  // const count = useSelector((state: RootState) => state.app.count);
   const appContext = useContext(AppContext);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
